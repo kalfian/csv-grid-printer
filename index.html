@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSV Grid Printer — A4</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+<!-- ── SIDEBAR ── -->
+<div class="sidebar">
+  <div class="logo">CSV Grid Printer</div>
+  <p class="subtitle">Upload CSV → customize per column → Print A4</p>
+
+  <!-- 1. Upload -->
+  <div class="sec">
+    <div class="sec-t">1. Data CSV</div>
+    <div class="upload" id="dropZone">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4m0 0L8 8m4-4l4 4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+      <p>Click or drag CSV here</p>
+      <span class="h2">.csv / .tsv — auto detect delimiter</span>
+      <input type="file" id="fileInput" accept=".csv,.tsv,.txt">
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+
+  <!-- 2. Grid -->
+  <div class="sec">
+    <div class="sec-t">2. Layout Grid</div>
+    <div class="calc" id="calcBox">
+      <span id="cC">5</span> × <span id="cR">10</span>
+      <span class="eq">= <span id="cT">50</span> / page</span>
+    </div>
+    <div class="row">
+      <div class="ctrl" style="flex:1"><label>Columns</label><input type="number" id="gridCols" value="5" min="1" max="20"></div>
+      <div class="ctrl" style="flex:1"><label>Rows</label><input type="number" id="gridRows" value="10" min="1" max="30"></div>
+      <div class="ctrl" style="flex:1"><label>Border</label>
+        <select id="borderStyle"><option value="solid">Solid</option><option value="dashed">Dashed</option><option value="dotted">Dotted</option></select>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Per-column -->
+  <div class="sec" id="colSec" style="display:none">
+    <div class="sec-t">3. Column Settings</div>
+    <div class="ctrl" style="margin-bottom:10px">
+      <label>Title Column (main row)</label>
+      <select id="titleCol"></select>
+    </div>
+    <div class="col-list" id="colList"></div>
+  </div>
+
+  <!-- 4. Footer -->
+  <div class="sec">
+    <div class="sec-t">4. Cell Footer</div>
+    <div class="row">
+      <div class="ctrl" style="flex:2"><label>Text</label><input type="text" id="footerText" placeholder="e.g. 1 Month Package"></div>
+      <div class="ctrl" style="flex:1"><label>Position</label>
+        <select id="footerAlign"><option value="center">Center</option><option value="left">Left</option><option value="right">Right</option></select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="ctrl" style="flex:1"><label>Size</label><input type="number" id="footerSize" value="6" min="4" max="14" step=".5"></div>
+      <div class="ctrl" style="flex:1"><label>Color</label>
+        <select id="footerColor">
+          <option value="#777">Gray</option><option value="#111">Black</option>
+          <option value="#e17055">Red</option><option value="#4169e1">Dark Blue</option>
+          <option value="#00b894">Green</option><option value="#0984e3">Blue</option>
+        </select>
+      </div>
+      <div class="ctrl" style="flex:1;justify-content:end;">
+        <div class="mini-tg"><span>Bold</span><div class="tg-sm" id="tgFB"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Preview template -->
+  <div class="sec">
+    <div class="sec-t">5. Template Preview</div>
+    <div class="tpl-wrap">
+      <div class="tpl-label">Single Cell Preview</div>
+      <div class="tpl-cell" id="tplCell"></div>
+    </div>
+  </div>
+
+  <button class="btn-print" id="btnPrint" disabled onclick="window.print()">🖨️ Print</button>
+</div>
+
+<!-- ── PREVIEW ── -->
+<div class="preview">
+  <div class="pv-head" id="pvHead" style="display:none"><strong id="pvTxt"></strong></div>
+  <div class="empty-msg" id="emptyMsg">Upload a CSV file on the left panel<br>to see the A4 preview</div>
+  <div id="pages"></div>
+</div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
